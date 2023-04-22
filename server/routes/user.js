@@ -5,7 +5,9 @@ const userController = require('../controllers/userController');
 
 //Create, find,update, delete
 router.get('/', userController.view);
-router.post('/', userController.view);
+router.post('/', userController.find);
+router.get('/adduser', userController.form);
+router.post('/adduser', userController.create);
 
 //Router
 // router.get('', (req,res)=>{
