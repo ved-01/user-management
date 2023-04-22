@@ -31,3 +31,7 @@ exports.view = (req, res) => {
         });
     });
 }
+//Find user
+exports.find = (req,res) => {
+    
+}
