@@ -31,6 +31,7 @@ exports.view = (req, res) => {
         });
     });
 }
+
 //Find user
 exports.find = (req,res) => {
     pool.getConnection((err, Connection) =>{
@@ -79,3 +80,73 @@ const { first_name, last_name, email, Phone, comments} = req.body;
         });
     });
 }
+
+//Edit User
+exports.edit = (req,res) => {
+    const { first_name, last_name, email, Phone, comments} = req.body;
+
+    pool.getConnection((err, Connection) =>{
+        if(err) throw err; //not connected
+        console.log('Connected as ID' + Connection.threadId);
+
+        // let searchTerm = req.body.search; //search is the actual input from user
+        
+        Connection.query('SELECT * FROM user WHERE id = ? ',[req.params.id],(err, rows) =>{
+            Connection.release();
+
+            if(!err){
+                res.render('edit-user', {rows});
+            } else{
+                console.log(err);
+            }
+
+            console.log('The data from user table: \n', rows);
+        });
+    });
+}
+
+//Update User
+exports.update = (req,res) => {
+    const { first_name, last_name, email, Phone, comments} = req.body;
+
+    pool.getConnection((err, Connection) =>{
+        if(err) throw err; //not connected
+        console.log('Connected as ID' + Connection.threadId);
+
+        // let searchTerm = req.body.search; //search is the actual input from user
+        
+        Connection.query('UPDATE user SET first_name = ?, last_name = ?, Phone = ?, email = ?, comments = ? WHERE id = ?', [first_name, last_name, Phone, email, comments , req.params.id],(err, rows) =>{
+            Connection.release();
+
+            if(!err){
+                pool.getConnection((err, Connection) =>{
+                    if(err) throw err; //not connected
+                    console.log('Connected as ID' + Connection.threadId);
+            
+                    // let searchTerm = req.body.search; //search is the actual input from user
+                    
+                    Connection.query('SELECT * FROM user WHERE id = ? ',[req.params.id],(err, rows) =>{
+                        Connection.release();
+            
+                        if(!err){
+                            res.render('edit-user', {rows,alert: `${first_name} has been updated`});
+                        } else{
+                            console.log(err);
+                        }
+            
+                        console.log('The data from user table: \n', rows);
+                    });
+                });
+
+
+
+
+            } else{
+                console.log(err);
+            }
+
+            console.log('The data from user table: \n', rows);
+        });
+    });
+}
+

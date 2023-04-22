@@ -13,7 +13,7 @@
 
 
 <form class="row g-3 needs-validation" method="POST" action="/adduser" novalidate>
-    <div class="col-6">
+    {{!-- <div class="col-6">
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="floatingInput" placeholder="First Name" name="first_name">
           <label for="floatingInput">First Name</label>
@@ -46,6 +46,8 @@
     </div>
   <div class="col-12 d-grid">
     <button class="btn btn-primary" type="submit">Submit</button>
-  </div>
+  </div> --}}
+
+  {{> user-form}}
 
 </form>
