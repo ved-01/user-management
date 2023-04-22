@@ -1,0 +1,1 @@
+Regular user management system created using NodeJS, ExpressJS, Express Handle Bars and MySQL as database
