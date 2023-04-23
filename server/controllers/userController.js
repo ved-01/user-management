@@ -150,3 +150,47 @@ exports.update = (req,res) => {
     });
 }
 
+//Delete User
+exports.delete = (req,res) => {
+    const { first_name, last_name, email, Phone, comments} = req.body;
+
+    pool.getConnection((err, Connection) =>{
+        if(err) throw err; //not connected
+        console.log('Connected as ID' + Connection.threadId);
+
+        // let searchTerm = req.body.search; //search is the actual input from user
+        
+        Connection.query('DELETE FROM user WHERE id = ? ',[req.params.id],(err, rows) =>{
+            Connection.release();
+
+            if(!err){
+                let removedUser = encodeURIComponent('User successfully removed')
+                res.redirect('/?removed = '+ removedUser);
+            } else{
+                console.log(err);
+            } 
+
+            console.log('The data from user table: \n', rows);
+        });
+    });
+}
+
+//view all users
+exports.viewall = (req, res) => {
+    pool.getConnection((err, Connection) =>{
+        if(err) throw err; //not connected
+        console.log('Connected as ID' + Connection.threadId);
+
+        Connection.query('SELECT * FROM user WHERE id = ? ',[req.params.id], (err, rows) =>{
+            Connection.release();
+
+            if(!err){
+                res.render('view-user', {rows});
+            } else{
+                console.log(err);
+            }
+
+            console.log('The data from user table: \n', rows);
+        });
+    });
+}
